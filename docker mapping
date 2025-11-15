@@ -1,0 +1,101 @@
+4  Demonstrate port mapping and verify running containers using docker ps.
+
+# *STEP 1 — Create a project in Eclipse*
+
+1. Open *Eclipse*
+2. Go to *File → New → Project*
+3. Select *General → Project*
+4. Name it: my-web-app
+5. Click *Finish*
+
+---
+
+# *STEP 2 — Add your files*
+
+Inside your project → right-click → *New → File*
+
+### Create server.js:
+
+js
+const http = require("http");
+
+const server = http.createServer((req, res) => {
+    res.end("Hello from Dockerized Web App!");
+});
+
+server.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
+
+
+### Create Dockerfile:
+
+dockerfile
+FROM node:18
+WORKDIR /app
+COPY . .
+EXPOSE 3000
+CMD ["node", "server.js"]
+
+
+That’s it. Eclipse is just acting as a text editor here.
+
+---
+
+# *STEP 3 — Open Terminal inside Eclipse*
+
+### Option A: Use Eclipse Terminal view
+
+Go to:
+
+
+Window → Show View → Terminal
+
+
+Click *Open Terminal* → choose your project directory.
+
+### Option B: Use Windows CMD/PowerShell
+
+Navigate manually:
+
+
+cd C:\Users\pooji\EclipseWorkspace\my-web-app
+
+
+---
+
+# *STEP 4 — Build Docker Image*
+
+Run this in the terminal:
+
+
+docker build -t my-web-app .
+
+
+---
+
+# *STEP 5 — Run the Docker Container*
+
+
+docker run -d -p 8080:3000 my-web-app
+
+
+Then open browser:
+
+
+http://localhost:8080
+
+
+---
+
+# *STEP 6 — Check Running Containers*
+
+
+docker ps
+
+
+You’ll see:
+
+
+CONTAINER ID   IMAGE        PORTS                    STATUS
+xxxxxxx        my-web-app   0.0.0.0:8080->3000/tcp   Up 
